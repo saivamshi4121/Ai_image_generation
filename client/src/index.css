@@ -1,9 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
     font-family: 'Inter', sans-serif;
+}
+
+body {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #6469ff, #9575ff);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #7479ff, #a575ff);
 }
 
 @media screen and (min-width: 480px) {
@@ -18,6 +43,37 @@
 }
  
 .prompt::-webkit-scrollbar-thumb {
-  background-color: #666e75;
+  background: linear-gradient(to bottom, #6469ff, #9575ff);
   border-radius: 5px;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, textarea, select {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Focus visible outline for accessibility */
+*:focus-visible {
+    outline: 2px solid #6469ff;
+    outline-offset: 2px;
+}
+
+/* Glassmorphism effect */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Animated gradient background */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }

@@ -4,26 +4,37 @@ import { downloadImage } from '../utils'
 
 const Card = ({ _id, name, prompt, photo }) => {
   return (
-    <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card">
-      <img
-        className="w-full h-auto object-cover rounded-xl"
-        src={photo}
-        alt={prompt}
-      />
-      <div className="group-hover:flex flex-col max-h-[94.5%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md">
-        <p className="text-white text-md overflow-y-auto prompt">{prompt}</p>
-        <div className="mt-5 flex justify-between items-center gap-2">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold">
-              {name[0]}
+    <div className="rounded-xl group relative shadow-lg hover:shadow-2xl card overflow-hidden bg-white transition-all duration-300 hover:scale-[1.02]">
+      <div className="relative overflow-hidden rounded-xl">
+        <img
+          className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-110"
+          src={photo}
+          alt={prompt}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
+      
+      <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="w-full bg-gradient-to-t from-black via-black/95 to-transparent p-4 rounded-b-xl">
+          <p className="text-white text-sm font-medium overflow-y-auto prompt line-clamp-2 mb-3 leading-relaxed">{prompt}</p>
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex justify-center items-center text-white text-xs font-bold shadow-lg">
+                {name[0].toUpperCase()}
+              </div>
+              <p className="text-white text-sm font-semibold">{name}</p>
             </div>
-            <p className="text-white text-sm">{name}</p>
           </div>
-          <button type="button" onClick={() => downloadImage(_id, photo)} className="outline-none bg-transparent border-none">
-            <img src={download} alt="download" className="w-6 h-6 object-contain invert" />
-          </button>
         </div>
       </div>
+      
+      <button 
+        type="button" 
+        onClick={() => downloadImage(_id, photo)} 
+        className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 pointer-events-auto"
+      >
+        <img src={download} alt="download" className="w-5 h-5 object-contain" />
+      </button>
     </div>
   )
 }

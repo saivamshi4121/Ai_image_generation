@@ -19,7 +19,8 @@ const CreatePost = () => {
     if(form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('https://dall-e-m7c8.onrender.com/api/v1/dalle', {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+        const response = await fetch(`${apiUrl}/api/v1/dalle`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ const CreatePost = () => {
 
         const data = await response.json();
 
-        setForm({ ...form, photo: 'data:image/jpeg;base64,${data.photo}'})
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}`})
       } catch (error) {
         alert(error);
       } finally {
@@ -47,7 +48,8 @@ const CreatePost = () => {
       setLoading(true);
 
       try {
-        const response = await fetch('http://localhost:8080/api/v1/post', {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+        const response = await fetch(`${apiUrl}/api/v1/post`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -76,19 +78,23 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt })
   }
   return (
-    <section className="max-w-7xl mx-auto">
-      <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
-        <p className="mt-2 text-[#666e75] text-[16px] max-w[500px]">Create imaginative and visually stunning images through DALL-E AI and share them with the community</p>
+    <section className="max-w-5xl mx-auto">
+      <div className="mb-8">
+        <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#222328] to-[#6469ff] text-4xl sm:text-5xl mb-3">
+          Create
+        </h1>
+        <p className="text-gray-600 text-lg max-w-2xl">
+          Create imaginative and visually stunning images through AI and share them with the community
+        </p>
       </div>
 
-      <form className="mt-16 max-w-3x1" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-5">
+      <form className="mt-12" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-6">
           <FormField 
             LabelName="Your Name"
             type="text"
             name="name"
-            placeholder="Sai Vamsi"
+            placeholder="Enter your name"
             value={form.name}
             handleChange={handleChange}
           />
@@ -96,51 +102,74 @@ const CreatePost = () => {
             LabelName="Prompt"
             type="text"
             name="prompt"
-            placeholder="A plush toy robot sitting against a yellow wall"
+            placeholder="A futuristic robot exploring a neon-lit cyberpunk city..."
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
             handleSurpriseMe={handleSurpriseMe}
           />
 
-          <div className="relative bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+          <div className="relative bg-white border-2 border-dashed border-gray-200 rounded-2xl w-full p-6 min-h-[400px] flex justify-center items-center hover:border-[#6469ff] transition-colors duration-300 shadow-sm">
             {form.photo ? (
               <img
                 src={form.photo}
                 alt={form.prompt}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain rounded-xl"
               />
             ): (
-              <img
-                src={preview}
-                alt="preview"
-                className="w-9/12 h-9/12 object-contain opacity-40"
-              />
+              <div className="text-center">
+                <img
+                  src={preview}
+                  alt="preview"
+                  className="w-32 h-32 object-contain opacity-30 mx-auto mb-4"
+                />
+                <p className="text-gray-400 text-sm">Your generated image will appear here</p>
+              </div>
             )}
 
             {generatingImg && (
-              <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
+              <div className="absolute inset-0 z-10 flex justify-center items-center bg-white/90 backdrop-blur-sm rounded-xl">
                 <Loader />
               </div>
             )}
           </div>
         </div>
-        <div className="mt-5 flex gap-5">
+        
+        <div className="mt-6 flex gap-4">
           <button
             type="button"
             onClick={generateImage}
-            className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            disabled={!form.prompt}
+            className="text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 font-semibold rounded-xl text-sm w-full sm:w-auto px-8 py-3.5 text-center shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
           >
-            {generatingImg ? 'Generating...' : 'Generate'}
+            {generatingImg ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Generating...
+              </span>
+            ) : (
+              '🚀 Generate Image'
+            )}
           </button>
         </div>
-        <div className="mt-10">
-          <p className="mt-2 text-[#666e75] text-[14px]">Once you have created the image you want, you can share it with others in the community</p>
+        
+        <div className="mt-10 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-100">
+          <p className="text-gray-700 text-sm mb-4">
+            Once you've created the perfect image, share it with the community!
+          </p>
           <button
             type="submit"
-            className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            disabled={!form.photo}
+            className="text-white bg-gradient-to-r from-[#6469ff] to-[#9575ff] hover:from-[#7479ff] hover:to-[#a575ff] font-semibold rounded-xl text-sm w-full sm:w-auto px-8 py-3.5 text-center shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
           >
-            {loading ? 'Sharing...' : 'Share with the community'}
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Sharing...
+              </span>
+            ) : (
+              '✨ Share with the community'
+            )}
           </button>
         </div>
       </form>
