@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Loader, Card, FormField } from '../components';
+import { API_BASE_URL } from '../constants';
 
 const RenderCards = ({ data, title }) => {
   if(data?.length > 0) { 
@@ -31,8 +32,7 @@ const Home = () => {
       setLoading(true);
 
       try {
-        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
-        const response = await fetch(`${apiUrl}/api/v1/post`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/post`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -1,3 +1,6 @@
+// API Configuration
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ai-image-generation-backend-ixhr.onrender.com';
+
 export const surpriseMePrompts = [
     'an armchair in the shape of an avocado',
     'a surrealist dream-like oil painting by Salvador Dalí of a cat playing checkers',
