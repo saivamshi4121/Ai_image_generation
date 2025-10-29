@@ -21,11 +21,16 @@ app.get('/', async (req, res) => {
 
 const startServer = async () => {
     try {
-        connectDB(process.env.MONGODB_URL);
+        if (!process.env.MONGODB_URL) {
+            console.error('MONGODB_URL environment variable is not set');
+            process.exit(1);
+        }
+        await connectDB(process.env.MONGODB_URL);
         const port = process.env.PORT || 8080;
         app.listen(port, () => console.log(`Server has started on port ${port}`))
     } catch (error) {
-        console.log(error);
+        console.error('Failed to start server:', error);
+        process.exit(1);
     }
 }
 
