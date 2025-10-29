@@ -57,10 +57,15 @@ const CreatePost = () => {
           body: JSON.stringify(form)
         })
 
-        await response.json();
+        const result = await response.json();
+        if (!response.ok || result?.success === false) {
+          const message = result?.message || result?.error || 'Failed to share image';
+          alert(message);
+          return;
+        }
         navigate('/');
       } catch (err) {
-        alert(err)
+        alert(err?.message || 'Failed to share image');
       } finally {
         setLoading(false);
       }

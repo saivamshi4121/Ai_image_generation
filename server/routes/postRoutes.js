@@ -26,17 +26,43 @@ router.route('/').get(async(req, res) => {
 //CREATE A POST
 router.route('/').post(async(req, res) => {
     try {
-        const { name, prompt, photo } = req.body;
-        const photoUrl = await cloudinary.uploader.upload(photo);
+        let { name, prompt, photo } = req.body;
+
+        // Default name if not provided
+        if (!name || typeof name !== 'string' || name.trim().length === 0) {
+            name = 'Anonymous';
+        }
+        if (!prompt || !photo) {
+            return res.status(400).json({ success: false, message: 'prompt and photo are required' });
+        }
+
+        // Ensure Cloudinary receives a data URL or remote URL
+        const isDataUrl = typeof photo === 'string' && photo.startsWith('data:image/');
+        const isHttpUrl = typeof photo === 'string' && (photo.startsWith('http://') || photo.startsWith('https://'));
+        if (!isDataUrl && !isHttpUrl) {
+            return res.status(400).json({ success: false, message: 'photo must be a data URL or http(s) URL' });
+        }
+
+        if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+            return res.status(500).json({ success: false, message: 'Server missing Cloudinary configuration' });
+        }
+
+        const uploadResult = await cloudinary.uploader.upload(photo, { folder: 'ai-image-gen', resource_type: 'image' });
+        const imageUrl = uploadResult.secure_url || uploadResult.url;
+        if (!imageUrl) {
+            return res.status(500).json({ success: false, message: 'Image upload failed' });
+        }
 
         const newPost = await Post.create({
             name,
             prompt,
-            photo: photoUrl.url,
-        })
+            photo: imageUrl,
+        });
         res.status(201).json({ success: true, data: newPost });
     } catch (error) {
-        res.status(500).json({ success: false, message: error });
+        console.error('Create post error:', error);
+        const message = error?.message || 'Internal server error';
+        res.status(500).json({ success: false, message });
     }
 });
 

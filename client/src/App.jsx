@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 
-import { logo } from './assets';
 import { Home, CreatePost } from './pages';
 
 const App = () => {
@@ -9,7 +8,7 @@ const App = () => {
    <BrowserRouter>
     <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-gray-200 shadow-sm backdrop-blur-sm bg-white/80">
     <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-      <img src={logo} alt="logo" className="w-28 object-contain" />
+      <span className="text-2xl font-bold bg-gradient-to-r from-[#6469ff] to-[#9575ff] bg-clip-text text-transparent">DreamCanvas</span>
     </Link>
 
     <div className="flex items-center gap-3">
