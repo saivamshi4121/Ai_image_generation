@@ -1,6 +1,10 @@
+**Try out whole live project here : dreamcanvas.stackhaus.dev** 
+
 # AI Image Generation with Azure OpenAI and MERN Stack
 
 A full-stack web application that allows users to create AI-generated images using Azure OpenAI's DALL-E API. This project demonstrates the power of AI image generation with a modern, minimal interface, community sharing, and interactive features.
+
+
 
 ## ❇️ Features
 
@@ -74,13 +78,16 @@ npm run dev
 
 Visit `http://localhost:5173` to see the application!
 
-## 📖 Detailed Setup
+## 📖 Documentation
 
-For step-by-step instructions on getting API keys and setting up the project, see:
+**📚 [Complete Project Documentation](docs/PROJECT_DOCUMENTATION.md)** - Comprehensive guide covering everything from architecture to deployment
+
+For detailed instructions on specific topics, see:
 - [docs/SETUP.md](docs/SETUP.md) - Complete setup guide
 - [docs/AZURE_OPENAI_SETUP.md](docs/AZURE_OPENAI_SETUP.md) - Azure OpenAI setup
 - [docs/CONFIG.md](docs/CONFIG.md) - Configuration details
 - [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) - Quick start guide
+- [docs/PROJECT_DOCUMENTATION.md](docs/PROJECT_DOCUMENTATION.md) - **Full project explanation from zero to end**
 
 ## 🧐 How to Use
 
